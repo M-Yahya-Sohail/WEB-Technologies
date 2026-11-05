@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Book Store</title>
+
+    <link href="/lib/bootstrap/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand bg-dark navbar-dark">
+        <div class="container">
+
+            <a class="navbar-brand" href="/Home/Index">
+                Book Store
+            </a>
+
+            <div class="navbar-nav">
+                <a class="nav-link" href="/Home/Index">Home</a>
+                <a class="nav-link" href="/Home/About">About</a>
+                <a class="nav-link" href="/Home/Contact">Contact</a>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        @RenderBody()
+    </div>
+
+    <footer class="bg-light text-center p-3 mt-5">
+        <p>Muhammad Yahya Sohail - BSEF24A020</p>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>
