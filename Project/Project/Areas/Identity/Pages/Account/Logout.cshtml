@@ -1,0 +1,7 @@
+@page
+@model LogoutModel
+@{ ViewData["Title"]="Log out"; }
+<section class="container section-space"><h1>Log out</h1>
+@if (User.Identity?.IsAuthenticated == true) { <form method="post"><button class="btn btn-primary">Confirm logout</button></form> }
+else { <p>You are signed out.</p><a asp-area="" asp-controller="Home" asp-action="Index">Back to shop</a> }
+</section>

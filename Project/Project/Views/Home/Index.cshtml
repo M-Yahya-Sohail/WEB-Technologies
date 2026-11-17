@@ -1,0 +1,85 @@
+@model CatalogViewModel
+@{ ViewData["Title"] = "Your everyday inspiration"; }
+
+<section class="hero container">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+            <p class="eyebrow"><span class="little-line"></span> FOR BIG IDEAS & EVERYDAY NOTES</p>
+            <h1>A fresh page.<br />A new <em>possibility.</em></h1>
+            <p class="hero-copy">From your first lecture to your next big idea, find the stationery that keeps you going. Reserve your essentials and collect them at our shop.</p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a class="btn btn-primary btn-lg" href="#collection">Explore the collection ↗</a>
+                <a class="btn btn-outline-primary btn-lg" href="#how-it-works">How pickup works</a>
+            </div>
+            <p class="small mt-4 muted">Browse online <span class="mx-2">/</span> Collect in store <span class="mx-2">/</span> Pay at pickup</p>
+        </div>
+        <div class="col-lg-6">
+            <div class="desk-art" role="img" aria-label="Green notebook, pencils and a paper note on a desk">
+                <span class="art-label">THE EVERYDAY EDIT / 01</span>
+                <div class="paper-note">make room<br />for <em>ideas.</em><span>✳</span></div>
+                <div class="notebook"><span>STATIONERYHUB</span><strong>Notes &amp;<br />notions.</strong><small>A LITTLE SPACE FOR BIG THOUGHTS</small></div>
+                <div class="pencil pencil-one"></div><div class="pencil pencil-two"></div>
+                <div class="round-label">WRITE.<br />CREATE.<br />REPEAT.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="benefits"><div class="container row mx-auto g-3">
+    <div class="col-md-4"><strong>01 / Find your essentials</strong><span>Stationery, books &amp; academic supplies</span></div>
+    <div class="col-md-4"><strong>02 / Skip the guesswork</strong><span>Check availability before your visit</span></div>
+    <div class="col-md-4"><strong>03 / Pick up, pay &amp; go</strong><span>Cash payment at the shop</span></div>
+</div></div>
+
+<section class="container section-space" id="collection">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <div><p class="eyebrow">SMALL TOOLS. BIG POTENTIAL.</p><h2>Your desk deserves these.</h2></div>
+        <span class="small muted">Sample collection · D2 dynamic MVC demonstration</span>
+    </div>
+
+    <form asp-controller="Home" asp-action="Index" method="get" class="row g-2 mb-4">
+        <div class="col-md-5"><input class="form-control" name="search" value="@Model.Search" placeholder="Search products" aria-label="Search products" /></div>
+        <div class="col-md-4">
+            <select class="form-select" name="category" aria-label="Filter by category">
+                <option value="">All categories</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category" selected="@(category == Model.SelectedCategory)">@category</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3"><button class="btn btn-primary" type="submit">Search</button> <a asp-action="Index">Reset</a></div>
+    </form>
+
+    <div class="row g-4">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-sm-6 col-lg-3">
+                <article class="product-card h-100 overflow-hidden">
+                    <img class="w-100 object-fit-cover" style="height:190px" src="@product.ImageUrl" alt="@product.ImageAlt" loading="lazy" />
+                    <div class="p-3">
+                        <p class="eyebrow">@product.Category</p><h3>@product.Name</h3>
+                        <p class="small muted">@product.Description</p>
+                        <div class="d-flex justify-content-between align-items-center gap-2">
+                            <strong>Rs. @product.Price.ToString("N0")</strong>
+                            <span class="stock">@(product.Stock > 0 ? "In stock" : "Out of stock")</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+    @if (Model.Products.Count == 0)
+    {
+        <div class="alert alert-info mt-3">No products match your search.</div>
+    }
+</section>
+
+<section class="container pb-5" id="how-it-works"><div class="pickup-panel"><div class="row g-4">
+    <div class="col-lg-5"><p class="eyebrow">A LITTLE PLANNING. A QUICK PICKUP.</p><h2>From your screen<br />to your school bag.</h2><p class="muted mt-3">Your local stationery stop, made simpler.</p></div>
+    <div class="col-lg-7">
+        <div class="step"><span>01</span><div><h3>Find your favourites</h3><p>Explore products and available stock.</p></div></div>
+        <div class="step"><span>02</span><div><h3>Place your pickup order</h3><p>Sign in, review your cart and confirm your order (planned for D3).</p></div></div>
+        <div class="step"><span>03</span><div><h3>Collect &amp; pay at the shop</h3><p>Pay in cash when you collect. Your order is then marked Completed.</p></div></div>
+    </div>
+</div></div></section>

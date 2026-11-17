@@ -1,0 +1,59 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Sign up";
+}
+<section class="container auth-section">
+    <div class="row g-0 auth-shell">
+        <div class="col-lg-5 auth-story">
+            <p class="eyebrow">A PLACE FOR YOUR NEXT IDEA</p>
+            <h1>Your essentials.<br />Your account.<br /><em>All together.</em></h1>
+            <p>Join StationeryHub to make your next stationery run a little easier.</p>
+            <div class="display-1 my-4" aria-hidden="true">✳</div><span class="small">BROWSE. ORDER. PICK UP.</span>
+        </div>
+        <div class="col-lg-7 auth-form">
+            <p class="eyebrow">LET'S GET STARTED</p><h2>Create your account.</h2>
+            <p class="muted">A customer account for all your everyday essentials.</p>
+            <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="mb-3"><label asp-for="Input.FullName" class="form-label">Full name</label><input asp-for="Input.FullName" class="form-control" autocomplete="name" placeholder="Your full name" /><span asp-validation-for="Input.FullName" class="text-danger"></span></div>
+                <div class="mb-3"><label asp-for="Input.Email" class="form-label">Email address</label><input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="you@example.com" /><span asp-validation-for="Input.Email" class="text-danger"></span></div>
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <input asp-for="Input.Password" type="password" class="form-control" autocomplete="new-password" />
+                                <button type="button" class="btn btn-outline-secondary password-toggle" data-password-toggle="Input_Password" aria-controls="Input_Password" aria-label="Show password" aria-pressed="false" title="Show password">
+                                    <svg class="password-eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-1.893C4.12 4.9 5.88 3.5 8 3.5s3.879 1.4 5.168 2.607A13 13 0 0 1 14.828 8a13 13 0 0 1-1.66 1.893C11.879 11.1 10.12 12.5 8 12.5s-3.879-1.4-5.168-2.607A13 13 0 0 0 1.172 8z" /><path d="M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6M6 8a2 2 0 1 1 4 0 2 2 0 0 1-4 0" /></svg>
+                                    <svg class="password-eye-closed d-none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474L2.64 4.762C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z" /><path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708a2.5 2.5 0 0 0-2.829-2.829zM13.646 14.354l-12-12 .708-.708 12 12z" /></svg>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label asp-for="Input.ConfirmPassword" class="form-label">Confirm password</label>
+                            <div class="input-group">
+                                <input asp-for="Input.ConfirmPassword" type="password" class="form-control" autocomplete="new-password" />
+                                <button type="button" class="btn btn-outline-secondary password-toggle" data-password-toggle="Input_ConfirmPassword" aria-controls="Input_ConfirmPassword" aria-label="Show confirm password" aria-pressed="false" title="Show confirm password">
+                                    <svg class="password-eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-1.893C4.12 4.9 5.88 3.5 8 3.5s3.879 1.4 5.168 2.607A13 13 0 0 1 14.828 8a13 13 0 0 1-1.66 1.893C11.879 11.1 10.12 12.5 8 12.5s-3.879-1.4-5.168-2.607A13 13 0 0 0 1.172 8z" /><path d="M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6M6 8a2 2 0 1 1 4 0 2 2 0 0 1-4 0" /></svg>
+                                    <svg class="password-eye-closed d-none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474L2.64 4.762C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z" /><path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708a2.5 2.5 0 0 0-2.829-2.829zM13.646 14.354l-12-12 .708-.708 12 12z" /></svg>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <p class="small muted">Use at least 8 characters, uppercase and lowercase letters, a number and a symbol.</p>
+                <button class="btn btn-primary w-100 py-3" type="submit">Create account ↗</button>
+            </form>
+            <p class="text-center mt-3">Already have an account? <a asp-page="Login">Log in</a></p>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/password-toggle.js" asp-append-version="true"></script>
+}
