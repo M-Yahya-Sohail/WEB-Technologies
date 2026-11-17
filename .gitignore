@@ -1,0 +1,64 @@
+
+# ====================================
+# ASP.NET Core / .NET Projects
+# ====================================
+
+# Build outputs
+bin/
+obj/
+Debug/
+Release/
+
+# Visual Studio temporary files
+.vs/
+*.user
+*.suo
+*.rsuser
+*.userosscache
+*.sln.docstates
+
+# VS Code / JetBrains local settings
+.vscode/
+.idea/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# NuGet generated packages
+*.nupkg
+*.snupkg
+packages/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.log
+*~
+*.swp
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+secrets.json
+appsettings.Local.json
+appsettings.*.local.json
+appsettings.*.Local.json
+*.pfx
+*.p12
+
+# Local SQLite databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
