@@ -1,49 +1,84 @@
-@model CustomerDashboardViewModel
+@model Project.Models.CustomerDashboardViewModel
+
 @{
-	ViewData["Title"] = "Customer dashboard";
+    ViewData["Title"] = "My Dashboard";
 }
-<section class="container section-space">
-	<div class="dashboard-heading">
-		<div>
-			<p class="eyebrow">MY STATIONERYHUB / CUSTOMER</p><h1>Welcome back, @Model.FullName<span class="text-success">.</span></h1>
-			<p class="muted">A little organisation for your everyday essentials.</p>
-		</div>
-		<a class="btn btn-primary" asp-controller="Home" asp-action="Index" asp-fragment="collection">Explore collection</a>
-	</div>
-	<div class="row g-3 mb-5">
-		<div class="col-md-4"><div class="metric"><span>Total orders (sample)</span><strong>@Model.TotalOrders.ToString("00")</strong><small class="muted">Your stationery journey so far</small></div></div>
-		<div class="col-md-4"><div class="metric"><span>Pending orders (sample)</span><strong>@Model.PendingOrders.ToString("00")</strong><small class="muted">Not yet collected</small></div></div>
-		<div class="col-md-4"><div class="metric"><span>Completed orders (sample)</span><strong>@Model.CompletedOrders.ToString("00")</strong><small class="muted">Paid and collected</small></div></div>
-	</div>
-	<div class="row g-4">
-		<div class="col-lg-8">
-			<div class="surface h-100">
-				<div class="d-flex justify-content-between align-items-center mb-3"><h2>My orders</h2><span class="small muted">Sample history</span></div>
-				<div class="table-responsive">
-					<table class="table align-middle">
-						<thead><tr><th>Order</th><th>Placed on</th><th>Total</th><th>Status</th></tr></thead>
-						<tbody>
-							@foreach (var order in Model.SampleOrders)
-							{
-								<tr>
-									<td><strong>#@order.Number</strong><small class="d-block muted">@order.Details</small></td>
-									<td>@order.Date.ToString("dd MMM yyyy")</td>
-									<td>Rs. @order.Total.ToString("N0")</td>
-									<td><span class="badge @(order.Status == "Pending" ? "text-bg-warning" : "text-bg-success")">@order.Status</span></td>
-								</tr>
-							}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4">
-			<aside class="pickup-panel h-100">
-				<p class="eyebrow">YOUR NEXT SHOP VISIT</p><h2>Your next<br />pickup.</h2>
-				<p>Sample preview: <strong>@Model.PendingOrders pending order(s)</strong> awaiting collection.</p><hr />
-				<p class="small">Pickup checkout and payment tracking will be implemented in Deliverable 3.</p>
-				<a class="text-link" asp-controller="Home" asp-action="Index" asp-fragment="how-it-works">How pickup works ↗</a>
-			</aside>
-		</div>
-	</div>
+
+<section class="container py-5">
+    <h1>My Dashboard</h1>
+    <p>Welcome, @Model.FullName.</p>
+
+    @if (TempData["Message"] is string message)
+    {
+        <div class="alert alert-success">@message</div>
+    }
+
+    <div class="row g-3 my-4">
+        <div class="col-md-4">
+            <div class="card card-body">
+                <span>Total Orders</span>
+                <h3>@Model.TotalOrders</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-body">
+                <span>Pending Orders</span>
+                <h3>@Model.PendingOrders</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-body">
+                <span>Completed Orders</span>
+                <h3>@Model.CompletedOrders</h3>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mb-3">Order History</h2>
+
+    @if (Model.Orders.Count == 0)
+    {
+        <div class="alert alert-info">
+            No orders yet. Browse the collection to get started.
+        </div>
+    }
+
+    @foreach (var order in Model.Orders)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-flex flex-wrap justify-content-between gap-2">
+                    <h3>SH-@order.Id</h3>
+                    <span class="badge bg-secondary align-self-start">
+                        @order.Status
+                    </span>
+                </div>
+
+                <p class="small text-muted">
+                    @order.PlacedAt.ToString("dd MMM yyyy HH:mm") UTC
+                </p>
+
+                <ul>
+                    @foreach (var item in order.Items)
+                    {
+                        <li>
+                            @item.ProductName —
+                            @item.Quantity × Rs. @item.UnitPrice.ToString("N2")
+                        </li>
+                    }
+                </ul>
+
+                <strong>Total: Rs. @order.Total.ToString("N2")</strong>
+
+                @if (order.Status == "Pending")
+                {
+                    <p class="mt-2 mb-0">
+                        Pay cash when collecting your order at the shop.
+                    </p>
+                }
+            </div>
+        </div>
+    }
 </section>

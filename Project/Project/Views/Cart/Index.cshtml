@@ -1,0 +1,150 @@
+﻿@model List<Project.Models.CartItemViewModel>
+
+@{
+	ViewData["Title"] = "My Cart";
+}
+
+<section class="container py-5">
+	<h1 class="mb-4">My Cart</h1>
+
+	@if (TempData["Message"] is string message)
+	{
+		<div class="alert alert-info">@message</div>
+	}
+
+	@if (Model.Count == 0)
+	{
+		<div class="alert alert-info">
+			Your cart is empty.
+		</div>
+	}
+	else
+	{
+		<div class="table-responsive">
+			<table class="table align-middle">
+				<thead>
+					<tr>
+						<th scope="col">Product</th>
+						<th scope="col">Price</th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Subtotal</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								<strong>@item.Name</strong>
+
+								@if (!item.IsActive)
+								{
+									<div class="small text-danger">
+										This product is no longer available.
+										Please remove it.
+									</div>
+								}
+								else if (item.Stock < item.Quantity)
+								{
+									<div class="small text-danger">
+										Stock has changed.
+										Available quantity: @item.Stock.
+									</div>
+								}
+							</td>
+
+							<td>
+								Rs. @item.Price.ToString("N2")
+							</td>
+
+							<td>
+								<form asp-controller="Cart"
+									  asp-action="Update"
+									  method="post"
+									  class="d-flex gap-2">
+
+									<input type="hidden"
+										   name="productId"
+										   value="@item.ProductId" />
+
+									<input type="number"
+										   name="quantity"
+										   value="@item.Quantity"
+										   min="1"
+										   max="10000"
+										   required
+										   class="form-control"
+										   aria-label="Quantity for @item.Name"
+										   style="width:100px" />
+
+									<button class="btn btn-outline-primary"
+											type="submit">
+										Update
+									</button>
+								</form>
+							</td>
+
+							<td>
+								Rs. @item.Subtotal.ToString("N2")
+							</td>
+
+							<td>
+								<form asp-controller="Cart"
+									  asp-action="Remove"
+									  method="post">
+
+									<input type="hidden"
+										   name="productId"
+										   value="@item.ProductId" />
+
+									<button class="btn btn-outline-danger"
+											type="submit">
+										Remove
+									</button>
+								</form>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="card card-body my-4">
+			<h3>
+				Total: Rs. @Model.Sum(i => i.Subtotal).ToString("N2")
+			</h3>
+
+			<p class="text-muted">
+				Review your items above. Pay cash when collecting at the shop.
+				Prices and stock are checked again when you confirm.
+			</p>
+
+			@if (Model.Any(i => !i.IsActive || i.Quantity < 1 || i.Quantity > i.Stock))
+			{
+				<div class="alert alert-warning mb-0">
+					Update or remove unavailable items before placing your order.
+				</div>
+			}
+			else
+			{
+				<form asp-controller="Cart"
+					  asp-action="Checkout"
+					  method="post">
+
+					<button type="submit" class="btn btn-primary">
+						Confirm Pickup Order
+					</button>
+				</form>
+			}
+		</div>
+	}
+
+	<a asp-controller="Home"
+	   asp-action="Index"
+	   asp-fragment="collection"
+	   class="btn btn-outline-primary">
+		Continue Shopping
+	</a>
+</section>

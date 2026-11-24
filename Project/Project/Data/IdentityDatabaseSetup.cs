@@ -9,8 +9,7 @@ public static class IdentityDatabaseSetup
     public static async Task InitializeAsync(IServiceProvider services, IConfiguration config)
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
-        // Creates tables only for this D2 Identity database (no migrations).
-        await context.Database.EnsureCreatedAsync();
+        await context.Database.MigrateAsync();
 
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         foreach (var role in new[] { "Admin", "Customer" })
@@ -19,8 +18,6 @@ public static class IdentityDatabaseSetup
                 Ensure(await roleManager.CreateAsync(new IdentityRole(role)));
         }
 
-        // Optional demo admin: set these ENVIRONMENT VARIABLES before starting.
-        // No administrator password is stored in source code or appsettings.json.
         var email = config["SeedAdmin:Email"];
         var password = config["SeedAdmin:Password"];
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))

@@ -3,27 +3,48 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project.Models;
-using Project.Services;
+using Project.Repositories;
 
 namespace Project.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly DemoStore _store;
+    private readonly IOrderRepository _orders;
     private readonly UserManager<ApplicationUser> _users;
+    private readonly IProductRepository _products;
 
-    public HomeController(DemoStore store, UserManager<ApplicationUser> users)
+    public HomeController( UserManager<ApplicationUser> users, IProductRepository products, IOrderRepository orders)
     {
-        _store = store;
         _users = users;
+        _products = products;
+        _orders = orders;
     }
 
-    public IActionResult Index(string? search, string? category)
-        => View(_store.GetCatalog(search, category));
+    public async Task<IActionResult> Index(
+    string? search, string? category)
+    {
+        var products = await _products.SearchAsync(search, category);
+
+        var allProducts = await _products.SearchAsync(null, null);
+
+        var model = new CatalogViewModel
+        {
+            Products = products,
+
+            Categories = allProducts
+                .Select(p => p.Category)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList(),
+
+            Search = search,
+            SelectedCategory = category
+        };
+
+        return View(model);
+    }
 
     public IActionResult Privacy() => View();
-
-    // Keep the D1-style routes functional, but use real Identity pages for accounts.
     public IActionResult Login() => RedirectToPage("/Account/Login", new { area = "Identity" });
     public IActionResult Signup() => RedirectToPage("/Account/Register", new { area = "Identity" });
 
@@ -31,8 +52,15 @@ public class HomeController : Controller
     public async Task<IActionResult> Customer()
     {
         var user = await _users.GetUserAsync(User);
-        var name = user?.FullName ?? User.Identity?.Name ?? "Customer";
-        return View(_store.GetCustomer(name));
+
+        if (user == null)
+            return Challenge();
+
+        return View(new CustomerDashboardViewModel
+        {
+            FullName = user.FullName,
+            Orders = await _orders.GetOrdersAsync(user.Id)
+        });
     }
 
     [Authorize(Roles = "Admin")]
@@ -43,4 +71,13 @@ public class HomeController : Controller
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
     });
+
+    [HttpGet]
+    public async Task<IActionResult> Products(
+    string? search, string? category)
+    {
+        var products = await _products.SearchAsync(search, category);
+
+        return PartialView("_ProductList", products);
+    }
 }
